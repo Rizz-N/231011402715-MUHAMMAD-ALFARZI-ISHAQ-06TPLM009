@@ -1,9 +1,11 @@
 package com.api.pos.controller;
 
 
+import com.api.pos.Config.response;
 import com.api.pos.models.Menus;
 import com.api.pos.service.ServiceMenu;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,12 +17,37 @@ public class ControlMenus {
     private final ServiceMenu service;
 
     @GetMapping
-    public List<Menus> getAll() {
-        return service.GetAll();
+    public response<List<Menus>> getAll() {
+        List<Menus> data = service.GetAll();
+
+            return new response<>(
+                    200,
+                    data.isEmpty() ? "data kosong" :"success",
+                    data,
+                    null,
+                    null,
+                    1
+            );
+
     }
+
     @GetMapping("/{id}")
-    public Menus getOne(@PathVariable Integer id) {
-        return service.GetById(id);
+    public ResponseEntity<?> getOne(@PathVariable Integer id) {
+        Menus data = service.GetById(id);
+        if(data == null) {
+            return ResponseEntity.noContent().build();
+        }else {
+        return ResponseEntity.ok(
+                new response<>(
+                200,
+                "success",
+                data,
+                null,
+                null,
+                1
+                )
+            );
+        }
     }
     @PostMapping
     public Menus create(@RequestBody Menus menu) {

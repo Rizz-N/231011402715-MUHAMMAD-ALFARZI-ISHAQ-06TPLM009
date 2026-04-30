@@ -1,5 +1,6 @@
 package com.api.pos.controller;
 
+import com.api.pos.Config.response;
 import com.api.pos.models.Category;
 import com.api.pos.service.ServiceCategory;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +16,47 @@ public class ControlCategory {
     private final ServiceCategory service ;
 
     @GetMapping
-    public List<Category> getAll(){
-        return service.GetAll();
+    public response<List<Category>> getAll(){
+            List<Category> data = service.GetAll();
+
+        if (data.isEmpty()) {
+            return new response<>(
+                404,
+              "tidak ada data",
+              data,
+              null,
+              null,
+              null
+            );
+        } else {
+
+            return new response<> (
+                    200,
+                "success",
+                data,
+                null,
+                null,
+                1
+            );
+        }
+    }
+
+    @PostMapping
+    public Category create(@RequestBody Category category){
+        return service.create(category);
     }
 
     @GetMapping("/{id}")
-    public Category getOne(@PathVariable int id){
-        return service.getById(id);
+    public response<Category> getOne(@PathVariable int id){
+        Category data = service.getById(id);
+        return new response<> (
+                200,
+                "success",
+                data,
+                null,
+                null,
+                1
+        );
     }
 
     @PutMapping("/{id}")

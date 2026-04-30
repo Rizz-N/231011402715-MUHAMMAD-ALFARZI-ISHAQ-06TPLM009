@@ -1,4 +1,4 @@
-package com.api.pos.corsConfig;
+package com.api.pos.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
