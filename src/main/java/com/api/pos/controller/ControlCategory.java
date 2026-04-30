@@ -4,6 +4,8 @@ import com.api.pos.Config.response;
 import com.api.pos.models.Category;
 import com.api.pos.service.ServiceCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,26 +21,14 @@ public class ControlCategory {
     public response<List<Category>> getAll(){
             List<Category> data = service.GetAll();
 
-        if (data.isEmpty()) {
-            return new response<>(
-                404,
-              "tidak ada data",
-              data,
-              null,
-              null,
-              null
-            );
-        } else {
-
             return new response<> (
-                    200,
-                "success",
+                data.isEmpty()?"Data kosong":"success",
                 data,
                 null,
                 null,
                 1
             );
-        }
+
     }
 
     @PostMapping
@@ -47,16 +37,23 @@ public class ControlCategory {
     }
 
     @GetMapping("/{id}")
-    public response<Category> getOne(@PathVariable int id){
+    public ResponseEntity<?> getOne(@PathVariable Integer id){
         Category data = service.getById(id);
-        return new response<> (
-                200,
-                "success",
+        if(data == null){
+            return ResponseEntity.noContent().build();
+        }else{
+
+        return ResponseEntity.ok (
+               new response<>(
+               "successs",
                 data,
                 null,
                 null,
                 1
+
+            )
         );
+        }
     }
 
     @PutMapping("/{id}")

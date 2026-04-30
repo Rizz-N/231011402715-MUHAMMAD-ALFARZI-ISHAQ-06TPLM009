@@ -21,7 +21,6 @@ public class ControlMenus {
         List<Menus> data = service.GetAll();
 
             return new response<>(
-                    200,
                     data.isEmpty() ? "data kosong" :"success",
                     data,
                     null,
@@ -39,7 +38,6 @@ public class ControlMenus {
         }else {
         return ResponseEntity.ok(
                 new response<>(
-                200,
                 "success",
                 data,
                 null,

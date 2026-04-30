@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class response<T> {
-    int status;
  private String message;
  private T data;
  private Integer prev;
