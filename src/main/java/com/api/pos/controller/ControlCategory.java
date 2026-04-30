@@ -4,8 +4,6 @@ import com.api.pos.Config.response;
 import com.api.pos.models.Category;
 import com.api.pos.service.ServiceCategory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -37,23 +35,17 @@ public class ControlCategory {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOne(@PathVariable Integer id){
+    public response<Category> getOne(@PathVariable Integer id){
         Category data = service.getById(id);
-        if(data == null){
-            return ResponseEntity.noContent().build();
-        }else{
 
-        return ResponseEntity.ok (
-               new response<>(
+        return new response<>(
                "successs",
                 data,
                 null,
                 null,
                 1
 
-            )
         );
-        }
     }
 
     @PutMapping("/{id}")

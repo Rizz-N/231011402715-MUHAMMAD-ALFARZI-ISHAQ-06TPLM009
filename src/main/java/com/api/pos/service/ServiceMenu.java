@@ -3,20 +3,25 @@ package com.api.pos.service;
 import com.api.pos.models.Menus;
 import com.api.pos.repository.RepoMenus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
 public class ServiceMenu {
     private final RepoMenus repository;
 
-    public List<Menus> GetAll(){
-        return repository.findAll();
+    public Page<Menus> GetAll(int page, int limit){
+        Pageable pageable =  PageRequest.of(page, limit);
+                return repository.findAll(pageable);
     }
+
     public Menus  GetById(int id){
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Data tidak di temukan"));
     }
     public Menus create(Menus menus){
         return repository.save(menus);
